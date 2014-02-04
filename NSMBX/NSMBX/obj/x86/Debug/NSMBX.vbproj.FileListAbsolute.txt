@@ -1,0 +1,7 @@
+c:\users\james pelster\documents\visual studio 2012\Projects\NSMBX\NSMBX\NSMBX\bin\x86\Debug\NSMBX.exe
+c:\users\james pelster\documents\visual studio 2012\Projects\NSMBX\NSMBX\NSMBX\bin\x86\Debug\NSMBX.pdb
+c:\users\james pelster\documents\visual studio 2012\Projects\NSMBX\NSMBX\NSMBX\bin\x86\Debug\NSMBX.xml
+c:\users\james pelster\documents\visual studio 2012\Projects\NSMBX\NSMBX\NSMBX\obj\x86\Debug\Microsoft.Xna.Framework.RuntimeProfile.txt
+c:\users\james pelster\documents\visual studio 2012\Projects\NSMBX\NSMBX\NSMBX\obj\x86\Debug\NSMBX.exe
+c:\users\james pelster\documents\visual studio 2012\Projects\NSMBX\NSMBX\NSMBX\obj\x86\Debug\NSMBX.xml
+c:\users\james pelster\documents\visual studio 2012\Projects\NSMBX\NSMBX\NSMBX\obj\x86\Debug\NSMBX.pdb

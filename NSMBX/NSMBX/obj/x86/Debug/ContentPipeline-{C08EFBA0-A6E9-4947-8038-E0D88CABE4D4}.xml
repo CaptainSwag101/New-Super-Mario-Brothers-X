@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<XnaContent xmlns:Pipeline="Microsoft.Xna.Framework.Content.Pipeline">
+  <Asset Type="Pipeline:BuildItemCollection">
+    <BuildSuccessful>true</BuildSuccessful>
+    <Settings>
+      <ContentProjectGUID>{C08EFBA0-A6E9-4947-8038-E0D88CABE4D4}</ContentProjectGUID>
+      <TargetPlatform>Windows</TargetPlatform>
+      <TargetProfile>HiDef</TargetProfile>
+      <BuildConfiguration>Debug</BuildConfiguration>
+      <CompressContent>false</CompressContent>
+      <RootDirectory>C:\Users\James Pelster\Documents\Visual Studio 2012\Projects\NSMBX\NSMBX\NSMBXContent\</RootDirectory>
+      <LoggerRootDirectory>C:\Users\James Pelster\Documents\Visual Studio 2012\Projects\NSMBX\NSMBX\NSMBX\</LoggerRootDirectory>
+      <IntermediateDirectory>C:\Users\James Pelster\Documents\Visual Studio 2012\Projects\NSMBX\NSMBX\NSMBX\obj\x86\Debug\</IntermediateDirectory>
+      <OutputDirectory>C:\Users\James Pelster\Documents\Visual Studio 2012\Projects\NSMBX\NSMBX\NSMBX\bin\x86\Debug\Content\</OutputDirectory>
+    </Settings>
+    <Assemblies>
+      <Assembly>
+        <Key>C:\Windows\Microsoft.Net\assembly\GAC_32\Microsoft.Xna.Framework.Content.Pipeline\v4.0_4.0.0.0__842cf8be1de50553\Microsoft.Xna.Framework.Content.Pipeline.dll</Key>
+        <Value>2013-09-08T17:35:04.1076-07:00</Value>
+      </Assembly>
+    </Assemblies>
+  </Asset>
+</XnaContent>
