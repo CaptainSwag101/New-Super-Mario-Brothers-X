@@ -10,7 +10,7 @@
     Public Shared InDialog As Boolean = False
 
     ' TILE DEFAULTS
-    Public Shared TileSize As Integer = 16 ' SOURCE SIZE FOR TILE SET
+    Public Shared TileSize As Integer = 32 ' SOURCE SIZE FOR TILE SET
 
     ' SETUP PLAYER
     Public Shared Player1 As New Player
