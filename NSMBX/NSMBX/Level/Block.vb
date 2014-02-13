@@ -1,7 +1,7 @@
 ﻿Public Class Block
     Public Property ImageAsset As Integer
     Public Property SrcRect As Rectangle
-    Public Property BlockAngle As Byte = 0  ' CAN BE EITHER 0, 12.25, 22.5, OR 45 DEGREES
+    Public Property BlockAngle As Byte = 0  ' CAN BE EITHER 0, 12.25, 22.5, OR 45 DEGREES (POSITIVE OR NEGATIVE)
     Public Property SizeX As Integer = 32
     Public Property SizeY As Integer = 32
     
@@ -16,6 +16,8 @@
     ' TILE ACTION
     Public IsActivated As Boolean = False
     Public IsAir As Boolean = False
+    Public IsBreakable As Boolean = False
+    Public ChangeOnActivate As Integer
     Public IsHitTrigger As Boolean = False
     Public IsLayerDestroyTrigger As Boolean = False
     Public TriggerScript As String = False
