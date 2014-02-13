@@ -14,7 +14,7 @@
 
     ' TILE ACTION
     Public IsActivated As Boolean = False
-    Public IsAir As Boolean = True
+    Public IsAir As Boolean = False
     Public IsHitTrigger As Boolean = False
     Public IsLayerDestroyTrigger As Boolean = False
     Public TriggerScript As String = False
