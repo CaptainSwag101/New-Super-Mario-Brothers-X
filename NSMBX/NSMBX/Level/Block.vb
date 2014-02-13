@@ -1,7 +1,5 @@
 ﻿Public Class Block
-    'Public Property ImageAsset As String = ""
     Public Property ImageAsset As Integer
-    'Public Property Name As String = ""
     Public Property SrcRect As Rectangle
     Public Property BlockAngle As Byte = 0  ' CAN BE EITHER 0, 12.25, 22.5, OR 45 DEGREES
     Public Property SizeX As Integer = 32
