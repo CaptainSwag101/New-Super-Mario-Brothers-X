@@ -1,4 +1,4 @@
-New-Super-Mario-Brothers-X
+New Super Mario Bros. X
 ==========================
 
 The open-source successor to the greatest Mario fangame of all time, Super Mario Bros. X!
