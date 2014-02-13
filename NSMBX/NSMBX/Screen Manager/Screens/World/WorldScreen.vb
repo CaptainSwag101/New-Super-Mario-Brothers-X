@@ -17,43 +17,16 @@
     ' TRIGGER PROCESSING 
     Private TriggerActivated As Boolean = False
 
-    Public Sub New()
+    Public Sub New(mapname As String)
         Name = "WorldScreen"
         'Map = New MapBase(MapWidth, MapHeight, New Vector2(0, 0))
         Dim MH As New MapHandler
-        Map = MH.LoadMap("HomeTown", Me)
+        Map = MH.LoadMap(mapname, Me)
         MapWidth = Map.MapWidth
         MapHeight = Map.MapHeight
 
         MapX = Map.StartLocation.X
         MapY = Map.StartLocation.Y
-
-        ' ADD ENEMY NPC FOR BATTLE TESTING
-        'Dim npc As New NPC
-        'With npc
-        '.ImageAlias = "Priestess"
-        '.Name = "Enemy"
-        '.Dialog = False
-        '.X = 14
-        '.Y = 25
-        '.IsVendor = False
-        '.MoveSpeed = 3
-        '.NPCType = EntityType.Enemy
-        '.MaxHP = 10
-        '.HP = .MaxHP
-        '.MaxCP = 0
-        '.CP = .MaxCP
-        '.Str = 13
-        '.Def = 14
-        '.Ftn = 10
-        '.Spd = 11
-        '.TurnNumber = 1
-        'End With
-        'Map.TileList(npc.X, npc.Y).Entity = npc
-        'Map.NPCList.Add(npc)
-
-        'Dim BattleManager As New BattleManager(Me)
-        My.Computer.Audio.Play(".\Big City Loop.wav", AudioPlayMode.BackgroundLoop)
     End Sub
 
     Public Overrides Sub HandleInput()
@@ -95,10 +68,8 @@
         If MoveTime > 25 And PlayerMoving = True Then
             If MoveDir = 0 And (PlayerOffsetX <> 0 Or PlayerOffsetY <> 0) Then
                 ' COMPLETE MOVE CYCLE BEFORE ACCEPTING NEW MOVEMENT
-                Map.TileList(PlayerX, PlayerY).IsBlocked = False
                 Move(LastDir)
             Else
-                Map.TileList(PlayerX, PlayerY).IsBlocked = False
                 Move(MoveDir)
             End If
 
@@ -109,28 +80,11 @@
             MoveTime = 0
         End If
 
-        ' UPDATE Player COORDINATES
+        ' UPDATE PLAYER COORDINATES
         PlayerX = MapX + PlayerScreenX
         PlayerY = MapY + PlayerScreenY
 
-
-        Map.TileList(PlayerX, PlayerY).IsBlocked = True
-
         ' ************* END CHARACTER MOVEMENT UPDATES ***************
-
-        ' **** TEST NPC UPDATE ****
-        If Focused = True Then
-            'For Each entity In Map.NPCList
-            '   entity.Update(Me)
-            'Next
-        End If
-
-        ' CHECK TRIGGERS
-        If PlayerMoving = False AndAlso Map.TileList(PlayerX, PlayerY).IsStepTrigger = True AndAlso TriggerActivated = False Then
-            ProcessTrigger(Map.TileList(PlayerX, PlayerY).TriggerScript)
-        Else
-            TriggerActivated = False
-        End If
 
         ' ********** WORLD UPDATES **********
         ' TILE ANIMATION
@@ -155,22 +109,6 @@
                     'Globals.SpriteBatch.Draw(Textures.FetchImage(Map.TileList(x, y).ImageAsset), New Rectangle(DrawX * TileSize + PlayerOffsetX, DrawY * TileSize + PlayerOffsetY, TileSize, TileSize), Map.TileList(x, y).SrcRect, Color.White)
                     ' VIEW COORDINATES ON TILE
                     'Globals.SpriteBatch.DrawString(Fonts.Verdana_8, "X:" & x & vbCrLf & "Y:" & y, New Vector2(DrawX * TileSize, DrawY * TileSize), Color.Black)
-                End If
-            Next
-        Next
-
-        ' DRAW ENTITIES
-        For DrawX = -1 To 16
-            For DrawY = -1 To 15
-                Dim x As Integer = DrawX + MapX
-                Dim y As Integer = DrawY + MapY
-                If x >= 0 And x <= MapWidth And y >= 0 And y <= MapHeight Then
-                    'For Each ent In Map.NPCList
-                    '   If ent.X = x And ent.Y = y Then
-                    '       Globals.SpriteBatch.Draw(Textures.Tomato, New Rectangle(DrawX * TileSize + PlayerOffsetX + ent.OffsetX, DrawY * TileSize + PlayerOffsetY + ent.OffsetY, TileSize, TileSize), ent.GetNPCSource(), Color.White)
-                    '       Globals.SpriteBatch.DrawString(Globals.Fonts.Georgia_16, ent.X & ":" & ent.Y & vbCrLf & "OffsetX: " & ent.OffsetX & vbCrLf & "OffsetY: " & ent.OffsetY & vbCrLf & "MoveDir: " & ent.MoveDir, New Vector2(DrawX * TileSize + PlayerOffsetX, (DrawY * TileSize + PlayerOffsetY) - 75), Color.White)
-                    '   End If
-                    'Next
                 End If
             Next
         Next
