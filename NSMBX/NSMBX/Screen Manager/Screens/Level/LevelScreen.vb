@@ -1,7 +1,7 @@
 Public Class LevelScreen
   Inherits BaseScreen
   
-  Public TileList(x As Integer, y As Integer)
+  Public BlockList(x As Integer, y As Integer)
   Public NPCList As New List(Of NPC)
   
   Public Sub New()
@@ -12,10 +12,9 @@ Public Class LevelScreen
         Dim V As New Vector2
         V = InvokeVector(Dir)
 
-        'If Map.TileList(V.X, V.Y).Entity IsNot Nothing Then
-        '   MsgBox(Map.TileList(V.X, V.Y).Entity.Dialog)
-        '   ScreenManager.AddScreen(New NPCDialog(Map.TileList(V.X, V.Y).Entity.Dialog))
-        'End If
+        If BlockList(V.X, V.Y).Entity IsNot Nothing Then
+          ScreenManager.AddScreen(New NPCDialog(BlockList(V.X, V.Y).Entity.Dialog))
+        End If
     End Sub
 
     Public Function InvokeVector(Dir As Short) As Vector2
