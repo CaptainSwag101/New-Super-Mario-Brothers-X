@@ -10,7 +10,7 @@ Imports System.Runtime.InteropServices
 <Assembly: AssemblyTitle("New Super Mario Bros. X")> 
 <Assembly: AssemblyProduct("New Super Mario Bros. X")> 
 <Assembly: AssemblyDescription("A sequel to the greatest fangame ever made!")> 
-<Assembly: AssemblyCompany("Swag Industrues")> 
+<Assembly: AssemblyCompany("Swag Industries")> 
 <Assembly: AssemblyCopyright("Copyright © 2014 James Pelster")> 
 <Assembly: AssemblyTrademark("")> 
 <Assembly: AssemblyCulture("")> 
@@ -33,6 +33,6 @@ Imports System.Runtime.InteropServices
 '      Build Number
 '      Revision
 '
-<Assembly: AssemblyVersion("0.0.0.1")> 
-<Assembly: AssemblyFileVersionAttribute("0.0.0.1")> 
+<Assembly: AssemblyVersion("0.0.1.0")> 
+<Assembly: AssemblyFileVersionAttribute("0.0.1.0")> 
 <Assembly: NeutralResourcesLanguageAttribute("en-US")> 
