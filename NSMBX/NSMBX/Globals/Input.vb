@@ -1,10 +1,20 @@
-﻿Public Class Input
+Public Enum MouseButton
+    Left
+    Right
+    None
+End Enum
+
+Public Class Input
     Shared CurrentKeyState As KeyboardState
     Shared LastKeyState As KeyboardState
+    Public Shared CurrentMouseState As MouseState
+    Shared LastMouseState As MouseState
 
     Public Shared Sub Update()
         LastKeyState = CurrentKeyState
         CurrentKeyState = Keyboard.GetState
+        LastMouseState = CurrentMouseState
+        CurrentMouseState = Mouse.GetState
     End Sub
 
     Public Shared Function KeyDown(key As Keys) As Boolean
@@ -18,5 +28,13 @@
         Return False
     End Function
 
+    Public Shared Function MouseClick() As MouseButton
+        If CurrentMouseState.LeftButton = ButtonState.Pressed And CurrentMouseState.RightButton = ButtonState.Released Then
+            Return MouseButton.Left
+        ElseIf CurrentMouseState.RightButton = ButtonState.Pressed And CurrentMouseState.LeftButton = ButtonState.Released Then
+            Return MouseButton.Right
+        Else
+            Return MouseButton.None
+        End If
+    End Function
 End Class
-
