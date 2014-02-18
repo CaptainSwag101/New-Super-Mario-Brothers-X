@@ -2,64 +2,130 @@
     Inherits BaseScreen
 
     ' MAP DIMENSIONS
-    Public Map As MapBase
-    Public MapWidth As Integer = 0
-    Public MapHeight As Integer = 0
-    Public TileSize As Integer = 32
+    'Public Map As MapBase
+    'Public MapWidth As Integer = 0
+    'Public MapHeight As Integer = 0
+    'Public TileSize As Integer = 32
 
     ' CURRENT COORDINATES
-    Public MapX As Integer = 20 ' Map X Coordinate
-    Public MapY As Integer = 19 ' Map Y Coordinate
+    'Public MapX As Integer = 20 ' Map X Coordinate
+    'Public MapY As Integer = 19 ' Map Y Coordinate
 
     ' SPRITE SOURCES
-    Private sRect As Rectangle
+    'Private sRect As Rectangle
 
     ' TRIGGER PROCESSING 
     Private TriggerActivated As Boolean = False
 
-    Public Sub New(mapname As String)
-        Name = "WorldScreen"
-        'Map = New MapBase(MapWidth, MapHeight, New Vector2(0, 0))
-        Dim MH As New MapHandler
-        Map = MH.LoadMap(mapname, Me)
-        MapWidth = Map.MapWidth
-        MapHeight = Map.MapHeight
+    ' MAP DIMENSIONS
+    Public Shared Map As MapBase
+    Public MapWidth As Integer = 256
+    Public MapHeight As Integer = 256
+    Public TileSize As Integer = 32
 
-        MapX = Map.StartLocation.X
-        MapY = Map.StartLocation.Y
+    ' CURRENT COORDINATES
+    Public Shared MapX As Integer = 20 ' Map X Coordinate
+    Public Shared MapY As Integer = 19 ' Map Y Coordinate
+
+    ' SPRITE SOURCES
+    Private sRect As Rectangle
+    Private SelectedSrcX As Integer = 0
+    Private SelectedSrcY As Integer = 0
+
+    ' CLICKED TILE PROPERTIES
+    Private SelectedBlocked As Boolean = False
+    Private SelectedStepTrigger As Boolean = False
+    Private SelectedTouchTrigger As Boolean = False
+    Private SelectedOnetimeTrigger As Boolean = False
+    Private SelectedActivated As Boolean = False
+
+    Dim IsSaving As Boolean = False
+
+    Public Sub New()
+        Name = "WorldScreen"
+        GrabFocus = True
+
+        ' CREATE A NEW BLANK MAP
+        Map = New MapBase(MapWidth, MapHeight, New Vector2(0, 0))
+        MapX = 0
+        MapY = 0
+        For X = 0 To MapWidth
+            For Y = 0 To MapHeight
+                Map.TileList(X, Y).SrcRect = New Rectangle(0, 0, 16, 16)
+                Map.TileList(X, Y).IsBlocked = False
+                Map.TileList(X, Y).IsStepTrigger = False
+                Map.TileList(X, Y).IsTouchTrigger = False
+                Map.TileList(X, Y).IsOnetimeTrigger = False
+                Map.TileList(X, Y).IsActivated = False
+            Next
+        Next
     End Sub
 
     Public Overrides Sub HandleInput()
-        If Focused = True Then
-
-            If PlayerOffsetX = 0 And PlayerOffsetY = 0 And PlayerMoving = False Then
-                If Input.KeyDown(Keys.Down) Then
-                    MovePlayer(1, PlayerX, PlayerY + 1)
-                    LastDir = 1
-                ElseIf Input.KeyDown(Keys.Up) Then
-                    MovePlayer(4, PlayerX, PlayerY - 1)
-                    LastDir = 4
-                ElseIf Input.KeyDown(Keys.Left) Then
-                    MovePlayer(2, PlayerX - 1, PlayerY)
-                    LastDir = 2
-                ElseIf Input.KeyDown(Keys.Right) Then
-                    MovePlayer(3, PlayerX + 1, PlayerY)
-                    LastDir = 3
-                Else
-                    MoveDir = 0
-                End If
+        If PlayerOffsetX = 0 And PlayerOffsetY = 0 And PlayerMoving = False Then
+            If Input.KeyDown(Keys.Down) Then
+                MovePlayer(1, PlayerX, PlayerY + 1)
+                LastDir = 1
+            ElseIf Input.KeyDown(Keys.Up) Then
+                MovePlayer(4, PlayerX, PlayerY - 1)
+                LastDir = 4
+            ElseIf Input.KeyDown(Keys.Left) Then
+                MovePlayer(2, PlayerX - 1, PlayerY)
+                LastDir = 2
+            ElseIf Input.KeyDown(Keys.Right) Then
+                MovePlayer(3, PlayerX + 1, PlayerY)
+                LastDir = 3
+            Else
+                MoveDir = 0
             End If
-
-            ' INVOKE NPC DIALOG
-            If Input.KeyPressed(Keys.X) Then
-                NPCChat(LastDir)
-            End If
-
-            'If Input.KeyPressed(Keys.I) Then
-            '   ScreenManager.AddScreen(New Inventory)
-            'End If
-
         End If
+
+        If Input.KeyPressed(Keys.NumPad1) Then
+            SelectedSrcX = 0
+            SelectedSrcY = 0
+        ElseIf Input.KeyPressed(Keys.NumPad2) Then
+            SelectedSrcX = 0
+            SelectedSrcY = 16
+        ElseIf Input.KeyPressed(Keys.NumPad3) Then
+            SelectedSrcX = 0
+            SelectedSrcY = 80
+        ElseIf Input.KeyPressed(Keys.NumPad4) Then
+            SelectedSrcX = 32
+            SelectedSrcY = 48
+        ElseIf Input.KeyPressed(Keys.NumPad5) Then
+            SelectedSrcX = 16
+            SelectedSrcY = 0
+        ElseIf Input.KeyPressed(Keys.NumPad6) Then
+            SelectedSrcX = 32
+            SelectedSrcY = 0
+        ElseIf Input.KeyPressed(Keys.NumPad7) Then
+            SelectedSrcX = 48
+            SelectedSrcY = 0
+        ElseIf Input.KeyPressed((Keys.NumPad8)) Then
+			SelectedBlocked = Not SelectedBlocked
+        ElseIf Input.KeyPressed((Keys.NumPad9)) Then
+			SelectedActivated = Not SelectedActivated
+        End If
+
+        If Input.MouseClick() = MouseButton.Left Then
+            Map.TileList((CInt(Math.Floor(Mouse.GetState.X / 32))) + MapX, (CInt(Math.Floor(Mouse.GetState.Y / 32) + MapY))).SrcRect = New Rectangle(SelectedSrcX, SelectedSrcY, 16, 16)
+            Map.TileList((CInt(Math.Floor(Mouse.GetState.X / 32))) + MapX, (CInt(Math.Floor(Mouse.GetState.Y / 32) + MapY))).IsBlocked = SelectedBlocked
+            Map.TileList((CInt(Math.Floor(Mouse.GetState.X / 32))) + MapX, (CInt(Math.Floor(Mouse.GetState.Y / 32) + MapY))).IsStepTrigger = False
+            Map.TileList((CInt(Math.Floor(Mouse.GetState.X / 32))) + MapX, (CInt(Math.Floor(Mouse.GetState.Y / 32) + MapY))).IsTouchTrigger = False
+            Map.TileList((CInt(Math.Floor(Mouse.GetState.X / 32))) + MapX, (CInt(Math.Floor(Mouse.GetState.Y / 32) + MapY))).IsOnetimeTrigger = False
+            Map.TileList((CInt(Math.Floor(Mouse.GetState.X / 32))) + MapX, (CInt(Math.Floor(Mouse.GetState.Y / 32) + MapY))).IsActivated = SelectedActivated
+        End If
+		
+        If Input.KeyPressed(Keys.S) And IsSaving = False Then
+            IsSaving = True
+            Dim MH As New MapHandler
+            MH.SaveMap(Map)
+            IsSaving = False
+        End If
+		
+		If (Input.KeyPressed(Keys.LeftControl) Or Input.KeyPressed(Keys.RightControl)) And Input.KeyPressed(Keys.G) Then
+            Globals.DebugEnabled = Not Globals.DebugEnabled
+		End If
     End Sub
 
     Public Overrides Sub Update()
@@ -85,13 +151,6 @@
         PlayerY = MapY + PlayerScreenY
 
         ' ************* END CHARACTER MOVEMENT UPDATES ***************
-
-        ' ********** WORLD UPDATES **********
-        ' TILE ANIMATION
-        ' UPDATE ANIMATIONS
-        For Each T As Tile In Map.AnimationList
-            T.Animator.Update()
-        Next
     End Sub
 
     Public Overrides Sub Draw()
@@ -106,85 +165,34 @@
 
                 If x >= 0 And x <= MapWidth And y >= 0 And y <= MapHeight Then
                     ' ******* Create FetchTileSource() function first *******
-                    'Globals.SpriteBatch.Draw(Textures.FetchImage(Map.TileList(x, y).ImageAsset), New Rectangle(DrawX * TileSize + PlayerOffsetX, DrawY * TileSize + PlayerOffsetY, TileSize, TileSize), Map.TileList(x, y).SrcRect, Color.White)
-                    ' VIEW COORDINATES ON TILE
-                    'Globals.SpriteBatch.DrawString(Fonts.Verdana_8, "X:" & x & vbCrLf & "Y:" & y, New Vector2(DrawX * TileSize, DrawY * TileSize), Color.Black)
+                    Globals.SpriteBatch.Draw(Textures.World, New Rectangle(DrawX * TileSize + PlayerOffsetX, DrawY * TileSize + PlayerOffsetY, TileSize, TileSize), Map.TileList(x, y).SrcRect, Color.White)
+                    
+					' VIEW COORDINATES ON TILE
+                    If Globals.DebugEnabled = True Then
+                        Globals.SpriteBatch.DrawString(Fonts.Arial_8, "X:" & x & vbCrLf & "Y:" & y, New Vector2(DrawX * TileSize, DrawY * TileSize), Color.White)
+                    End If
+					
+					' VIEW IF A TILE IS BLOCKED
+                    If Map.TileList(x, y).IsBlocked = True And Globals.DebugEnabled = False Then
+                        Globals.SpriteBatch.DrawString(Fonts.Arial_8, "Block", New Vector2(DrawX * TileSize, DrawY * TileSize), Color.White)
+                    End If
                 End If
             Next
         Next
 
-        Globals.SpriteBatch.Draw(Textures.Player, New Rectangle(PlayerScreenX * 32, PlayerScreenY * 32, 32, 32), FetchPlayerSrc(LastDir), Color.White)
+		' DRAW INVISIBLE PLAYER SPRITE
+        Globals.SpriteBatch.Draw(Textures.Player, New Rectangle(PlayerScreenX * 32, PlayerScreenY * 32, 32, 32), FetchPlayerSrc(LastDir), Color.White * 0.0F)
+		
+		' DRAW MOUSE TOOLTIP
+        Globals.SpriteBatch.Draw(Textures.World, New Rectangle(CInt(Math.Floor(Mouse.GetState.X / 32)) * 32, CInt(Math.Floor(Mouse.GetState.Y / 32)) * 32, 32, 32), New Rectangle(SelectedSrcX, SelectedSrcY, 16, 16), Color.White)
+        If SelectedBlocked = True And Globals.DebugEnabled = False Then
+            Globals.SpriteBatch.DrawString(Fonts.Arial_8, "Block", New Vector2(CInt(Math.Floor(Mouse.GetState.X / 32)) * 32, CInt(Math.Floor(Mouse.GetState.Y / 32)) * 32), Color.White)
+        End If
 
         Globals.SpriteBatch.End()
     End Sub
 
-    Private Sub NPCChat(Dir As Short)
-        Dim V As New Vector2
-        V = InvokeVector(Dir)
+    Public Sub PlaceTile()
 
-        'If Map.TileList(V.X, V.Y).Entity IsNot Nothing Then
-        '   MsgBox(Map.TileList(V.X, V.Y).Entity.Dialog)
-        '   ScreenManager.AddScreen(New NPCDialog(Map.TileList(V.X, V.Y).Entity.Dialog))
-        'End If
-    End Sub
-
-    Public Function InvokeVector(Dir As Short) As Vector2
-        Dim V As Vector2
-
-        Select Case Dir
-            Case 1 ' DOWN 
-                V = New Vector2(PlayerX, PlayerY + 1)
-            Case 2 ' LEFT
-                V = New Vector2(PlayerX - 1, PlayerY)
-            Case 3 ' RIGHT
-                V = New Vector2(PlayerX + 1, PlayerY)
-            Case 4 ' UP
-                V = New Vector2(PlayerX, PlayerY - 1)
-        End Select
-
-        Return V
-    End Function
-
-    Private Sub ProcessTrigger(TriggerScript As String)
-        ' Action|Value|Optional Params
-        TriggerActivated = True
-
-        Dim TriggerAction As String = Split(TriggerScript, "|")(0)
-        Dim TriggerValue As String = Split(TriggerScript, "|")(1)
-        Dim TriggerParams As String = ""
-
-        If Split(TriggerScript, "|").Count > 2 Then
-            TriggerParams = Split(TriggerScript, "|")(2)
-        End If
-
-        Select Case TriggerAction
-            Case "LoadMap"
-                Dim MH As New MapHandler
-                Map = Nothing
-                Map = MH.LoadMap(TriggerValue, Me)
-                MapWidth = Map.MapWidth
-                MapHeight = Map.MapHeight
-
-                MapX = Map.StartLocation.X
-                MapY = Map.StartLocation.Y
-
-                ' OVERRIDE START COORDS
-                If TriggerParams <> "" Then
-                    MapX = Split(TriggerParams, ":")(0)
-                    MapY = Split(TriggerParams, ":")(1)
-                End If
-
-                PlayerX = MapX + PlayerScreenX
-                PlayerY = MapY + PlayerScreenY
-            Case "Teleport"
-                'TELEPORT DESTINATION
-                If TriggerParams <> "" Then
-                    MapX = Split(TriggerParams, ":")(0) - PlayerScreenX
-                    MapY = Split(TriggerParams, ":")(1) - PlayerScreenY
-                End If
-
-                PlayerX = MapX + PlayerScreenX
-                PlayerY = MapY + PlayerScreenY
-        End Select
     End Sub
 End Class
