@@ -1,10 +1,12 @@
 Public Class LevelScreen
   Inherits BaseScreen
   
-  Public BlockList(x As Integer, y As Integer)
+  Public Level As LevelBase
   Public NPCList As New List(Of NPC)
   
-  Public Sub New()
+  Public Sub New(levelPath As String, Me)
+	Dim LH As New LevelHandler
+	Level = LH.LoadLevel(levelPath)
     
   End Sub
   
