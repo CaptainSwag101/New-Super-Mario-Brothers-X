@@ -3,6 +3,8 @@ Public Class LevelScreen
   
   Public Level As LevelBase
   Public NPCList As New List(Of NPC)
+  Public Gravity As Integer = 0.05
+  Public Friction As Integer = 0.1
   
   Public Sub New(levelPath As String, Me)
 	Dim LH As New LevelHandler
@@ -78,5 +80,36 @@ Public Class LevelScreen
                 PlayerY = MapY + PlayerScreenY
         End Select
     End Sub
-  
+	
+	Public Sub Update()
+		MyBase.Update()
+		
+		'If Math.Abs(YSpeed) <> 0 And Level.BlockList(PlayerX, PlayerY - 1).IsBlocked = False Then
+			If YSpeed > 0 Then
+				YSpeed -= Gravity * (10 ^ FixFloat(YSpeed, Gravity))
+			ElseIf YSpeed < -6 Then 
+				YSpeed = -6
+			End If
+		'End If
+		
+		If Math.Abs(XSpeed) <> 0 Then
+			If XSpeed > 0 Then
+				XSpeed -= Friction * (10 ^ FixFloat(XSpeed, Friction))
+			ElseIf XSpeed < 0 Then
+				XSpeed = -(Math.Abs(XSpeed) - Friction * (10 ^ FixFloat(Math.Abs(XSpeed, Friction)))
+			End If
+		End If
+	End Sub
+	
+	Public Sub Draw()
+		
+	End Sub
+	
+	Private Function FixFloat(speed As Float, Mod As Integer) As Integer
+		Dim Exponent As Integer = 0
+		While (speed - (Mod * (10 ^ Exponent))) = speed
+			Exponent += 1
+		End While
+		Return Exponent
+	End Function
 End Class
