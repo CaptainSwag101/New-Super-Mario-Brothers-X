@@ -7,7 +7,7 @@ Public Class MapHandler
     'Private MapAssets As New List(Of ImageAsset)
 
     Public Function LoadMap(MapPath As String, screen As WorldScreen) As MapBase
-        Using fStream As FileStream = New FileStream(MapPath & ".map", FileMode.Open)
+        Using fStream As FileStream = New FileStream(MapPath & ".wld", FileMode.Open)
             Using zipStream As GZipStream = New GZipStream(fStream, CompressionMode.Decompress)
                 Using reader As New BinaryReader(zipStream)
                     Dim Name As String = reader.ReadString
@@ -122,7 +122,7 @@ Public Class MapHandler
     End Function
 
     Public Sub SaveMap(Map As MapBase, MapName As String)
-        Using fStream As FileStream = New FileStream(MapName & ".map", FileMode.Create)
+        Using fStream As FileStream = New FileStream(MapName & ".wld", FileMode.Create)
             Using zipStream As GZipStream = New GZipStream(fStream, CompressionMode.Compress)
                 Using writer As New BinaryWriter(zipStream)
                     writer.Write(MapName)
