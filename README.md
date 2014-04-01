@@ -7,9 +7,9 @@ Created by James Pelster "CaptainSwag101"
 
 All content and characters are the property of Nintendo and their respective owners. No copyright infringement is intended.
 
-If you enjoy this game, then please support Nintendo and buy a Wii U.
+If you enjoy this game, then please support Nintendo and buy a Wii U or a 3DS.
 
-    Copyright (C) 2014  James Pelster "CaptainSwag101"
+    Copyright (C) 2014 James Pelster "CaptainSwag101"
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
